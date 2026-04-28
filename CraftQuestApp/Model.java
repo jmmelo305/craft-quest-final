@@ -93,6 +93,98 @@ class Inventory {
         this.items = new ArrayList<>();
     }
 
-    
 
+    // Created a null item exception error - Error Handling
+    void addItem(String item){
+        if (item == null){
+            throw new IllegalArgumentException("Item cannot be null");
+        }
+        items. add(item);
+    }
+
+    // getters
+    List<String> getItems() {
+        return items;
+    }
+    int getItemCount(){
+        return items.size();
+    }
 }
+
+
+// Class made to track player's position on the grid, holds their inventory,
+// and notifies the View everytime something changes
+class Player{
+    // variables for this class.
+    private int x;
+    private int y;
+
+    private Inventory inventory;
+    private List<GameObserver> observers; 
+
+
+    // Constructor
+    Player(int startX, int startY){
+        this.x = startX;
+        this.y = startY;
+        this.inventory = new Inventory();
+        this.observers = new ArrayList<>();
+    }
+
+    // two methods that run the entire observer pattern on the player side
+    void addObserver (GameObserver observer){
+        observers.add(observer);
+    }
+    private void notifyObservers(){
+        for (GameObserver o: observers){
+            o.onGameUpdated();
+        }
+    }
+
+    // method that focuses on movements in the game. 
+    void move (int dx, int dy, World world){
+        // initializing variables
+        int newX; 
+        int newY;
+        newX = x + dx;
+        newY = y + dy;
+
+        // Blocks movement into non - walkable tiles
+        if (newX < 0 || newX >= world.getWidth())
+            return;
+        if (newY < 0 || newY >= world.getHeight()) 
+            return;
+
+        // !target.isWalkable() means if if the targetted tile IS NOT walkable then it prevents the movement into it.
+        Tile target = world.getTile(newX, newY);
+        if (!target.isWalkable()) return; 
+
+        // Move is valid, updates position
+        x = newX;
+        y = newY; 
+
+        // Auto collects a chest if the player lands on one
+        if (target.isCollectible()){
+            target.collect();
+            inventory.addItem("Chset Loot");
+        }
+        // tells the View something has changed. 
+        notifyObservers();
+    }
+
+    // getters
+    int getX (){
+        return x;
+    }
+
+    int getY (){
+        return y;
+    }
+    Inventory getInventory(){
+        return inventory;
+    }
+
+
+
+
+}   
