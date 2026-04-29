@@ -1,4 +1,4 @@
-package CraftQuestApp;
+package CraftQuestApp.src;
 /*
 Programmer: Melo
 Program: Model File for CraftQuest
@@ -183,8 +183,101 @@ class Player{
     Inventory getInventory(){
         return inventory;
     }
+}
+
+class FixedMapStrategy implements MapStrategy {
+
+    @Override
+    public Tile[][] generate(int width, int height) {
+        Tile[][] grid = new Tile[height][width];
+
+        // Fill everything with GRASS
+        for (int row = 0; row < height; row++)
+            for (int col = 0; col < width; col++)
+                grid[row][col] = new Tile(Tile.Type.GRASS);
+
+        // Water river down column 4
+        for (int row = 0; row < height; row++)
+            grid[row][4] = new Tile(Tile.Type.WATER);
+
+        // Stone patches
+        grid[2][2] = new Tile(Tile.Type.STONE);
+        grid[2][3] = new Tile(Tile.Type.STONE);
+        grid[6][7] = new Tile(Tile.Type.STONE);
+        grid[7][7] = new Tile(Tile.Type.STONE);
+
+        // Three chests to find
+        grid[1][8] = new Tile(Tile.Type.CHEST);
+        grid[5][6] = new Tile(Tile.Type.CHEST);
+        grid[8][1] = new Tile(Tile.Type.CHEST);
+
+        return grid;
+    }
+}
 
 
+// RANDOM MAP STRATEGY — Strategy Design Pattern
+// Generates a different map every time the game is played.
 
+class RandomMapStrategy implements MapStrategy {
 
-}   
+    @Override
+    public Tile[][] generate(int width, int height) {
+        Tile[][] grid = new Tile[height][width];
+        Random rand = new Random();
+
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                int roll = rand.nextInt(100);
+                if      (roll < 10) grid[row][col] = new Tile(Tile.Type.WATER);
+                else if (roll < 25) grid[row][col] = new Tile(Tile.Type.STONE);
+                else                grid[row][col] = new Tile(Tile.Type.GRASS);
+            }
+        }
+
+        // Place exactly 3 chests on random GRASS tiles
+        int chestsPlaced = 0;
+        while (chestsPlaced < 3) {
+            int row = rand.nextInt(height);
+            int col = rand.nextInt(width);
+            if (grid[row][col].getType() == Tile.Type.GRASS) {
+                grid[row][col] = new Tile(Tile.Type.CHEST);
+                chestsPlaced++;
+            }
+        }
+
+        // Always keep spawn point (0,0) clear
+        grid[0][0] = new Tile(Tile.Type.GRASS);
+        return grid;
+    }
+}
+
+// WORLD — holds the tile grid, exposes access + win condition
+// Uses a MapStrategy to generate its grid at construction.
+// Does not care HOW the map is built — just that it gets one.
+public class World {
+
+    private Tile[][] grid;
+    private int width, height;
+
+    public World(int width, int height, MapStrategy strategy) {
+        this.width  = width;
+        this.height = height;
+        this.grid   = strategy.generate(width, height);
+    }
+
+    public Tile getTile(int x, int y) { return grid[y][x]; }
+    public int getWidth()             { return width; }
+    public int getHeight()            { return height; }
+
+    /** Returns true only when every chest on the map is collected */
+    public boolean allChestsCollected() {
+        for (int row = 0; row < height; row++)
+            for (int col = 0; col < width; col++) {
+                Tile t = grid[row][col];
+                if (t.getType() == Tile.Type.CHEST && !t.isCollected())
+                    return false;
+        }
+        return true;
+    }
+}
