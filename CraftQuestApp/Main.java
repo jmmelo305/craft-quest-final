@@ -1,9 +1,8 @@
 package CraftQuestApp;
 import java.util.Scanner;
 
-// ============================================================
-// MAIN — entry point for CraftQuest
-//
+
+// Main File: Responsible for starting CraftQuest program
 // Responsibilities:
 //   1. Ask player to choose a map type (Strategy pattern)
 //   2. Construct the Model (World + Player)
@@ -11,8 +10,8 @@ import java.util.Scanner;
 //   4. Register the View as an Observer of the Player
 //   5. Hand control to the Controller
 //
-// This is the only place all three MVC layers meet.
-// ============================================================
+
+
 public class Main {
 
     public static void main(String[] args) {

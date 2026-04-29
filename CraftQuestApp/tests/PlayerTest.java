@@ -1,3 +1,11 @@
+/*
+Programmer: Jose Melo
+Program: PlayerTest.java
+Purpose: JUnit Tests for Player movement and location
+Date: April 28, 2026
+*/
+
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

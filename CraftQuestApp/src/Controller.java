@@ -1,14 +1,13 @@
 package CraftQuestApp.src;
 import java.util.Scanner;
 
-// ============================================================
-// CONTROLLER — owns the game loop and handles player input
-//
-// Reads keyboard input via Scanner, translates it into
-// Model method calls, and checks the win condition.
-// Holds NO game state of its own — all state lives in
-// World and Player (the Model).
-// ============================================================
+/* 
+Programmer: Jose Melo
+Program: Controller.java
+Purpose: Controller for MVC Programs: Manages the game loop and player input
+Date: April 25, 2026
+
+*/
 public class Controller {
 
     private World world;

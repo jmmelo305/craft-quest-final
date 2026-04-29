@@ -1,3 +1,10 @@
+/*
+Programmer: Jose Melo
+Program: InventoryTest.java
+Purpose: JUnit Tests for Inventory system
+Date: April 28, 2026
+*/
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,8 +1,12 @@
 package CraftQuestApp.src;
 
-// Implements GameObserver so it gets notified automatically
-// by Player whenever the game state changes (Observer pattern).
-// Contains ZERO game logic — only reads from Model and prints.
+/*
+Programmer: Jose Melo
+Program: View.java
+Purpose: Implements GameObserver and works with the visual outputs of the terminal for the game.
+Date: April 26, 2026
+*/
+
 
 public class View implements GameObserver {
 

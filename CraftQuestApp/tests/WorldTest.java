@@ -1,3 +1,10 @@
+/*
+Programmer: Jose Melo
+Program: WorldTest.java
+Purpose: JUnit Tests for World generation system.
+Date: April 28, 2026
+*/
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
